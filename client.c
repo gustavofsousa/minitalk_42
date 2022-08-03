@@ -6,7 +6,7 @@
 /*   By: gusousa <gusousa@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/02 15:01:31 by gusousa           #+#    #+#             */
-/*   Updated: 2022/08/03 14:14:06 by gusousa          ###   ########.fr       */
+/*   Updated: 2022/08/03 16:15:42 by gusousa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,19 @@ int	main(int argc, char **argv)
 	int	*byte;
 
 	byte = convert_int_binary('a');
+	while (i < 8)
+	{
+		if (byte[i] == 1)
+			kill(*argv, SIGUSR1);
+		else if (byte[i] == 0)
+			kill(*argv, SIGUSR2);
+	}
+	
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = &handle_sig;
+	sigaction(SIGUSR1, &sa, NULL);
+
+
 	while (++i < 8)
 		printf("%d", byte[i]);
 
