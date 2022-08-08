@@ -6,13 +6,15 @@
 /*   By: gusousa <gusousa@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/02 15:03:01 by gusousa           #+#    #+#             */
-/*   Updated: 2022/08/08 15:50:05 by gusousa          ###   ########.fr       */
+/*   Updated: 2022/08/08 15:53:35 by gusousa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include <signal.h>
 #include <stdio.h>
+#include <unistd.h>
+
 /*
 int	power(int base, int expo)
 {
@@ -71,6 +73,7 @@ int	main()
 
 	sa.sa_sigaction = handle_sig;
 	sa.sa_flags = SA_SIGINFO;
+	printf("PID: %d\n", getpid());
 	while (42)
 	{
 		sigaction(SIGUSR1, &sa, NULL);

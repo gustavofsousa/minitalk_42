@@ -6,12 +6,13 @@
 /*   By: gusousa <gusousa@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/02 15:01:31 by gusousa           #+#    #+#             */
-/*   Updated: 2022/08/08 15:35:25 by gusousa          ###   ########.fr       */
+/*   Updated: 2022/08/08 15:56:57 by gusousa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include <stdio.h>
+#include <unistd.h>
 
 int	*convert_int_binary(int num)
 {
@@ -27,7 +28,7 @@ int	*convert_int_binary(int num)
 	return (bytes);
 }
 
-void	send_char(int sig, int *byte)
+void	send_char(int *byte)
 {
 	int	i;
 
@@ -39,7 +40,6 @@ void	send_char(int sig, int *byte)
 		else if (byte[i] == 0)
 			kill(argv[1], SIGUSR2);
 	}
-	c++;
 }
 
 int	main(int argc, char **argv)
@@ -51,26 +51,18 @@ int	main(int argc, char **argv)
 	c = 0;
 	while (argv[2][c])
 	{
-		send_char(byte);	
-
+		byte = convert_int_binary(argv[2][c]);
+		c++;
+		send_char(byte);
+		pause();
 	}
-	send_char(1, byte);
-	sa.sa_handler = &send_char;
-	sigaction(SIGUSR1, &sa, NULL);
-
 
 	/*
 	if (argc != 3 || !ft_str_is_numeric(argv[1]))
 	{
 		ft_printf("Bad. Send it right next time");
 		break	;
-	}o
-	kill(info->si_pid)
-
-	while(str[i])
-		send_char(str[i])
-		i++;
-		pause();
+	}
 	*/
 	
 }

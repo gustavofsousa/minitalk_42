@@ -1,3 +1,5 @@
+NAME: minitalk
+
 SRCS = server.c client.c
 
 OBJS = $(SRCS:.c=.o)
@@ -6,14 +8,22 @@ CC = cc
 
 CFLAGS = -Wextra -Wall -Werror
 
-all: server client
+LIBFT = libft/libft.a
+
+all: $(NAME)
+
+$(NAME): server client
+
+server: $(LIBFT) server.c
+	$(CC) $(CFLAGS) server.c -o server -Llibft -lft
+
+client: $(LIBFT) client.c
+	$(CC) $(CFLAGS) client.c -o client -Llibft -lft
 
 bonus: server client
 
-
-
-
-
+$(LIBFT):
+	make -C libft
 
 
 clean:
@@ -25,4 +35,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all bonus libft clean fclean re
+.PHONY: $(NAME) all bonus libft clean fclean re
