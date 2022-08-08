@@ -1,8 +1,6 @@
-NAME: minitalk
+NAME = minitalk
 
 SRCS = server.c client.c
-
-OBJS = $(SRCS:.c=.o)
 
 CC = cc
 
