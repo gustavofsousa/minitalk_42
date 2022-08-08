@@ -6,13 +6,19 @@
 /*   By: gusousa <gusousa@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/02 15:03:01 by gusousa           #+#    #+#             */
-/*   Updated: 2022/08/03 16:15:42 by gusousa          ###   ########.fr       */
+/*   Updated: 2022/08/08 15:50:05 by gusousa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include <signal.h>
 #include <stdio.h>
+/*
+int	power(int base, int expo)
+{
+
+}
+*/
 
 int	convert_byte_dec(int *byte)
 {
@@ -31,7 +37,6 @@ int	convert_byte_dec(int *byte)
 		{
 			pot *= 2;
 			j++;
-
 		}
 		deci += byte[i] * pot;
 	}
@@ -39,32 +44,41 @@ int	convert_byte_dec(int *byte)
 }
 
 
-void	handle_sig1(int sig)
+void	handle_sig(int sig, siginfo_t *info, void *ucontext)
 {
-	if (sig == 1)
+	static int	count;
+	int			*byte;
+	int			deci;
+
+	if (sig == SIGUSR1)
 		byte[count] = 1;
-	else if (sig == 0)
+	else if (sig == SIGUSR2)
 		byte[count] = 0;
+	count++;
+	if (count == 8)
+	{
+		count = 0;
+		deci = convert_byte_dec(byte);	
+		write(1, &deci, 1);
+		kill(info->si_pid, SIGUSR1);
+	}
 }
 
 
 int	main()
 {
-	char	letter[8];
 	struct sigaction	sa;
 
-	int	point[8] = {0,0,1,1,0,0,1,1};
-	printf("%c", convert_byte_dec(point));
-
-
-	/*
+	sa.sa_sigaction = handle_sig;
+	sa.sa_flags = SA_SIGINFO;
 	while (42)
 	{
-		sa.sa_flags = SA_RESTART;
-		sa.sa_handler = &handle_sig;
-
 		sigaction(SIGUSR1, &sa, NULL);
-
+		sigaction(SIGUSR2, &sa, NULL);
+		pause();
 	}
-	*/
+
+
+
+
 }
