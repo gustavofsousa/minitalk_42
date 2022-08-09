@@ -6,7 +6,7 @@
 /*   By: gusousa <gusousa@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/02 15:01:31 by gusousa           #+#    #+#             */
-/*   Updated: 2022/08/09 17:46:43 by gusousa          ###   ########.fr       */
+/*   Updated: 2022/08/09 17:17:13 by gusousa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,17 @@ void	send_char(int *byte, int pid)
 			kill(pid, SIGUSR1);
 		else if (byte[i] == 0)
 			kill(pid, SIGUSR2);
-		//pause();
-		usleep(250);
+		pause();
+		//usleep(250);
 	}
 }
 
 void	catcher(int signum)
 {
-	//printf("Catch + 1\n");
-	(void)signum;
+	if (signum == SIGUSR1)
+		golf();
+	if (signum == SIGUSR2)
+		send_char();
 }
 
 int	main(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: gusousa <gusousa@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/02 15:03:01 by gusousa           #+#    #+#             */
-/*   Updated: 2022/08/09 16:12:31 by gusousa          ###   ########.fr       */
+/*   Updated: 2022/08/09 18:24:16 by gusousa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ void	handle_sig(int sig, siginfo_t *info, void *ucontext)
 		count = 0;
 		deci = convert_byte_dec(byte);	
 		write(1, &deci, 1);
+		kill(info->si_pid, SIGUSR1);
 	}
-	kill(info->si_pid, SIGUSR1);
+	else
+		kill(info->si_pid, SIGUSR2);
 }
 
 int	main()
