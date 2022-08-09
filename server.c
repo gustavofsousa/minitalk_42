@@ -6,7 +6,7 @@
 /*   By: gusousa <gusousa@student.42.rio>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/02 15:03:01 by gusousa           #+#    #+#             */
-/*   Updated: 2022/08/08 18:12:30 by gusousa          ###   ########.fr       */
+/*   Updated: 2022/08/09 16:12:31 by gusousa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,8 @@ int	power(int base, int expo)
 	int	pot;
 
 	pot = 1;
-	while (expo != 0)
-	{
+	while (expo-- != 0)
 		pot *= base;
-		expo--;
-	}
 	return (pot);
 }
 
@@ -48,18 +45,16 @@ void	handle_sig(int sig, siginfo_t *info, void *ucontext)
 
 	(void)(ucontext);
 	if (sig == SIGUSR1)
-		byte[count] = 1;
+		byte[count++] = 1;
 	else if (sig == SIGUSR2)
-		byte[count] = 0;
-	count++;
+		byte[count++] = 0;
 	if (count == 8)
 	{
 		count = 0;
 		deci = convert_byte_dec(byte);	
-		printf("%c", deci);
-		kill(info->si_pid, SIGUSR1);
+		write(1, &deci, 1);
 	}
-	printf("recebi um sinal\n");
+	kill(info->si_pid, SIGUSR1);
 }
 
 int	main()
@@ -70,9 +65,8 @@ int	main()
 	sa.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
-	printf("PID: %c\n", getpid());
+	printf("PID: %d\n", getpid());
 	while (42)
-	{
 		pause();
-	}
+	return (0);
 }
