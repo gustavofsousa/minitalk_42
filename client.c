@@ -47,7 +47,7 @@ void	prepare_message(char *str_pid, char *message)
 		send_char(pid, *message);
 		message++;
 	}
-	send_char(3, *message);
+	send_char(pid, *message);
 }
 
 int	main(int argc, char **argv)

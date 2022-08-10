@@ -32,10 +32,9 @@ void	handle_sig(int sig, siginfo_t *info, void *ucontext)
 	{
 		count = 0;
 		write(1, &c, 1);
-		kill(info->si_pid, SIGUSR1);
+		if (c == '\0')
+			kill(info->si_pid, SIGUSR1);
 	}
-	else
-		kill(info->si_pid, SIGUSR2);
 }
 
 int	main()
@@ -44,7 +43,6 @@ int	main()
 
 	sa.sa_sigaction = handle_sig;
 	sa.sa_flags = SA_SIGINFO;
-	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	printf("PID: %d\n", getpid());
 	while (42)
