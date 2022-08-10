@@ -17,22 +17,21 @@
 
 void	catcher(int signum)
 {
-	write(1, "I have finished my message"i, 26); 
+	write(1, "I have finished my message", 26); 
 	(void)signum;
 }
 
-void	send_char(int pid, unsigned char byte)
+void	send_char(int pid, unsigned char c)
 {
-	uint8_t		counter;
+	int	counter;
 
-	counter = 1 << 8;
-	while (counter)
+	counter = 8;
+	while (counter--)
 	{
-		if (byte & counter)
+		if (c >> counter & 1)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
-		counter = counter >> 1;
 		usleep(200);
 	}
 }

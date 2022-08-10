@@ -14,6 +14,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "libft/libft.h"
 
 void	handle_sig(int sig, siginfo_t *info, void *ucontext)
 {
