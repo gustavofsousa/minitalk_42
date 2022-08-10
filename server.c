@@ -15,44 +15,23 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	power(int base, int expo)
-{
-	int	pot;
-
-	pot = 1;
-	while (expo-- != 0)
-		pot *= base;
-	return (pot);
-}
-
-int	convert_byte_dec(int *byte)
-{
-	int	i;
-	int	deci;
-
-	i = 8;
-	deci = 0;
-	while (--i >= 0)
-		deci += byte[i] * power(2, 7 - i);
-	return (deci);
-}
-
 void	handle_sig(int sig, siginfo_t *info, void *ucontext)
 {
 	static int	count;
-	static int	byte[8];
-	int			deci;
+	static int	c;	
 
 	(void)(ucontext);
 	if (sig == SIGUSR1)
-		byte[count++] = 1;
+	{
+		c = c << 1;
+		c = c | 1; 	
+	}
 	else if (sig == SIGUSR2)
-		byte[count++] = 0;
+		c = c << 1;	
 	if (count == 8)
 	{
 		count = 0;
-		deci = convert_byte_dec(byte);	
-		write(1, &deci, 1);
+		write(1, &c, 1);
 		kill(info->si_pid, SIGUSR1);
 	}
 	else
