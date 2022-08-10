@@ -44,7 +44,7 @@ void	prepare_message(char *str_pid, char *message)
 	while (*message)
 	{
 		send_char(pid, *message);
-		message++;
+		message++;//Can be above
 	}
 	send_char(pid, *message);
 }
